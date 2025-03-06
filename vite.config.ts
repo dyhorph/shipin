@@ -5,12 +5,18 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   plugins: [vue()],
   build: {
-    // 生产环境构建配置
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // 移除console
-        drop_debugger: true // 移除debugger
+    // 使用esbuild作为压缩工具（Vite默认）
+    minify: 'esbuild',
+    // esbuild配置
+    target: 'es2015',
+    // 移除console和debugger
+    cssTarget: 'chrome80',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'element-plus': ['element-plus'],
+          'vendor': ['vue', '@google/generative-ai']
+        }
       }
     }
   }
